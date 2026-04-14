@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 对话框标题 -->
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/query_plan"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 查询类型选择 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/query_type"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp" />
+
+    <RadioGroup
+        android:id="@+id/query_type_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/date_query_radio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/date_query"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/month_query_radio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/month_query" />
+
+    </RadioGroup>
+
+    <!-- 日期查询输入框 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/date_query_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/date_query_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请选择日期（格式：yyyy-MM-dd）"
+            android:focusable="false"
+            android:clickable="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 月份查询输入框 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/month_query_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/month_query_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请选择月份（格式：yyyy-MM）"
+            android:focusable="false"
+            android:clickable="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 按钮区域 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_marginEnd="8dp"
+            style="?android:attr/borderlessButtonStyle" />
+
+        <Button
+            android:id="@+id/query_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/query"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/purple_500" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_weather"
+        android:icon="@android:drawable/ic_menu_mylocation"
+        android:title="天气" />
+    <item
+        android:id="@+id/nav_notes"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="心得" />
+    <item
+        android:id="@+id/nav_plans"
+        android:icon="@android:drawable/ic_menu_today"
+        android:title="规划" />
+    <item
+        android:id="@+id/nav_user"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="我的" />
+</menu>

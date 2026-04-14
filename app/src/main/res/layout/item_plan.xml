@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- 左侧复选框（初始隐藏） -->
+    <CheckBox
+        android:id="@+id/check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_marginEnd="16dp" />
+
+    <!-- 中间内容区域 -->
+    <LinearLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/detail_button"
+        android:layout_toEndOf="@id/check_box"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/plan_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_title_hint"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/plan_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time_default"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/plan_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/duration_default"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+
+    <!-- 右侧详情按钮 -->
+
+    <!-- 状态指示器（右上角） -->
+    <ImageButton
+        android:id="@+id/detail_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="12dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@android:drawable/ic_menu_info_details" />
+
+    <TextView
+        android:id="@+id/plan_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/status_pending"
+        android:textSize="12sp"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@id/detail_button"
+        android:layout_marginEnd="8dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:background="@drawable/status_background"
+        android:textColor="@color/white" />
+
+</RelativeLayout>
