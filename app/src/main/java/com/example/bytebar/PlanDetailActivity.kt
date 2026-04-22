@@ -123,7 +123,7 @@ class PlanDetailActivity: AppCompatActivity() {
                 calendar.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
-        //未完成
+
         dialogBinding.confirmButton.setOnClickListener {
             val title = dialogBinding.planTitleInput.text.toString()
             val time = dialogBinding.planTimeInput.text.toString()
