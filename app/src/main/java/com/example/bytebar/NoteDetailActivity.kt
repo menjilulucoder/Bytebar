@@ -11,10 +11,6 @@ import com.example.bytebar.data.NoteDao
 import com.example.bytebar.databinding.ActivityNoteDetailBinding
 import com.example.bytebar.databinding.DialogNoteBinding
 import com.example.bytebar.model.Note
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -24,6 +20,7 @@ class NoteDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteDetailBinding
     private lateinit var noteDao: NoteDao
     private var currentNote: Note? = null
+    private var isPolishing = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,27 +124,38 @@ class NoteDetailActivity : AppCompatActivity() {
     }
 
     private fun polishNote(note: Note) {
+        if (isPolishing) {
+            Toast.makeText(this, "正在润色中，请稍候", Toast.LENGTH_SHORT).show()
+            return
+        }
+        isPolishing = true
+        binding.polishButton.isEnabled = false
+
         // 显示加载提示
         Toast.makeText(this, "正在润色...", Toast.LENGTH_SHORT).show()
-        
-        // 在后台线程调用API
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val prompt = "请帮我润色这篇学习心得，包括总结主要内容和添加一些心情描写：\n\n${note.content}"
-                val result = SparkApi.getChatResponse(prompt)
-                
-                // 在主线程更新UI
-                withContext(Dispatchers.Main) {
-                    // 直接更新笔记内容
-                    updateNoteContent(note, result)
-                }
-            } catch (e: Exception) {
-                Log.e("NoteDetailActivity", "Polish failed", e)
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@NoteDetailActivity, "润色失败，请重试", Toast.LENGTH_SHORT).show()
-                }
+
+        val prompt = "请帮我润色这篇学习心得，包括总结主要内容和添加一些心情描写：\n\n${note.content}"
+        val streamBuilder = StringBuilder()
+
+        SparkApi().chat(prompt, object : SparkApi.Callback {
+            override fun onPartial(partialText: String) {
+                streamBuilder.append(partialText)
+                binding.noteContent.text = streamBuilder.toString()
             }
-        }
+
+            override fun onSuccess(response: String) {
+                updateNoteContent(note, response)
+                isPolishing = false
+                binding.polishButton.isEnabled = true
+            }
+
+            override fun onError(error: String) {
+                Log.e("NoteDetailActivity", "Polish failed: $error")
+                Toast.makeText(this@NoteDetailActivity, "润色失败: $error", Toast.LENGTH_SHORT).show()
+                isPolishing = false
+                binding.polishButton.isEnabled = true
+            }
+        })
     }
 
     private fun updateNoteContent(note: Note, polishedContent: String) {

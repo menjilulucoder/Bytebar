@@ -19,6 +19,7 @@ class PlanDetailActivity: AppCompatActivity() {
     private lateinit var plansDao: PlansDao
     private var planId: Int = 0
     private var currentPlan: Plan? = null
+    private var isImproving = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,20 +54,35 @@ class PlanDetailActivity: AppCompatActivity() {
     }
     
     private fun improveContentWithAI(plan: Plan) {
+        if (isImproving) {
+            Toast.makeText(this, "AI 正在生成中，请稍候", Toast.LENGTH_SHORT).show()
+            return
+        }
+        isImproving = true
+        binding.searchButton.isEnabled = false
+
         val currentContent = plan.content.ifEmpty { "暂无内容" }
         val prompt = "请优化以下学习规划内容，使其更加详细、具体、有可操作性：\n\n当前内容：$currentContent\n\n请直接返回优化后的内容，不需要其他说明。"
 
         Toast.makeText(this, "AI 正在优化内容...", Toast.LENGTH_SHORT).show()
+        val streamBuilder = StringBuilder()
 
         SparkApi().chat(prompt, object : SparkApi.Callback {
+            override fun onPartial(partialText: String) {
+                streamBuilder.append(partialText)
+                binding.planContent.text = streamBuilder.toString()
+            }
+
             override fun onSuccess(response: String) {
                 saveAIResponse(plan, response)
+                isImproving = false
+                binding.searchButton.isEnabled = true
             }
 
             override fun onError(error: String) {
-                runOnUiThread {
-                    Toast.makeText(this@PlanDetailActivity, "AI 调用失败: $error", Toast.LENGTH_LONG).show()
-                }
+                Toast.makeText(this@PlanDetailActivity, "AI 调用失败: $error", Toast.LENGTH_LONG).show()
+                isImproving = false
+                binding.searchButton.isEnabled = true
             }
         })
     }

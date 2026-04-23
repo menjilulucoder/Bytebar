@@ -55,6 +55,7 @@ class SparkApi {
     private val mainHandler = Handler(Looper.getMainLooper())
 
     interface Callback {
+        fun onPartial(partialText: String) {}
         fun onSuccess(response: String)
         fun onError(error: String)
     }
@@ -118,9 +119,11 @@ class SparkApi {
                     val textArray = choices?.optJSONArray("text")
                     val content = textArray?.optJSONObject(0)?.optString("content")
 
-                    if (content != null) {
+                    if (!content.isNullOrEmpty()) {
                         responseBuilder.append(content)
                         android.util.Log.d("SparkApi", "添加内容: $content")
+                        // 流式返回分片内容，支持边生成边展示
+                        mainHandler.post { callback.onPartial(content) }
                     }
 
                     // 检查状态字段
